@@ -2,3 +2,6 @@ test/
 user_db/4J/
 realtime_detection_demo.py
 .＊
+*/.DS_Store
+__pycache__
+./__pycache__
