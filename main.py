@@ -14,10 +14,23 @@ class FaceIdConfig:
         self.user_db_path = Path(__file__).parent/Path("user_db")
 
     def get_task(self):
-        return self.task
+        return self.task.lower()
 
     def get_user_db_path(self):
         return self.user_db_path
+
+    def is_debug(self):
+        if self.task == "debug":
+            return True
+        return False
+
+def detection(configs, logger):
+    logger.info(f"Init Face ID")
+    faceid = FaceId(configs)        
+    logger.info(f"face id detection")
+    username = faceid.detect()
+    
+    return username, faceid
 
 
 @log
@@ -29,10 +42,7 @@ def main(logger = get_default_logger()):
     logger.info("Task is : {args.task}")
     configs = FaceIdConfig(args.task)
     if configs.get_task() == "detection":
-        logger.info(f"Init Face ID")
-        faceid = FaceId(configs.get_user_db_path())        
-        logger.info(f"face id detection")
-        username = faceid.detect()
+        username, faceid = detection(configs, logger)
         if faceid.is_login(username):
             password = faceid.get_password(username)
             pyautogui.click()            
@@ -40,6 +50,9 @@ def main(logger = get_default_logger()):
             pyautogui.press('enter')
     elif configs.get_task() == "create_user":
         create_new_user()
+    elif configs.get_task() == "debug":
+        username, __ = detection(configs, logger)
+        logger.info(f"Detect user {username}")
     else:
         print(f"error ")
         raise 

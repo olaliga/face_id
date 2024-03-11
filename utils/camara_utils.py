@@ -26,7 +26,7 @@ def capture_img(imgname, logger = get_default_logger()):
                 cv2.destroyAllWindows()
                 break
             else:
-                logger.info("please take the photo again !")
+                logger.info(f"please take the photo again since detect {len(face_locations)}faces")
 
 
 

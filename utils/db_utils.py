@@ -73,6 +73,7 @@ class UserDB():
         self.user_db = self.create_user_db(user_db_path)
         
     def create_user_db(self, user_db_path):
+        os.makedirs(user_db_path, exist_ok=True)
         user_db = {}
         for __, username_dirs, __ in os.walk(user_db_path):
             for username in username_dirs:
